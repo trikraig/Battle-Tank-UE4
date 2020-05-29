@@ -20,6 +20,8 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();	 //Needed for BP Begin Play to run
+
+	tankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called to bind functionality to input

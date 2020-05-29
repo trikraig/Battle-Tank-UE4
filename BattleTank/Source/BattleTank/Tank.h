@@ -29,6 +29,8 @@ protected:
 	UTankAimingComponent* tankAimingComponent{ nullptr };
 
 private:
+
+	//TODO Remove when copy firing to aiming component.
 	UPROPERTY(EditAnywhere, Category = "Firing")
 	float launchSpeed{ 4000 };
 	double lastFireTime{ 0 };
