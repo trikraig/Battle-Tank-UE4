@@ -27,28 +27,6 @@ void UTankAimingComponent::BeginPlay()
 	// ...
 }
 
-
-
-void UTankAimingComponent::SetBarrelReference(UTankBarrel* barrelToSet)
-{
-	if (!barrelToSet)
-	{
-		UE_LOG(LogTemp, Error, TEXT("No barrel reference set!"));
-		return;
-	}
-	barrel = barrelToSet;
-}
-
-void UTankAimingComponent::SetTurretReference(UTankTurret* turretToSet)
-{
-	if (!turretToSet)
-	{
-		UE_LOG(LogTemp, Error, TEXT("No turre reference set!"));
-		return;
-	}
-	turret = turretToSet;
-}
-
 void UTankAimingComponent::AimAt(const FVector& hitLocation, const float& launchSpeed)
 {
 	if (!barrel) {
@@ -77,8 +55,15 @@ void UTankAimingComponent::AimAt(const FVector& hitLocation, const float& launch
 	}
 }
 
+void UTankAimingComponent::Initialise(UTankBarrel* barrelToSet, UTankTurret* turretToSet)
+{
+	barrel = barrelToSet;
+	turret = turretToSet;
+}
+
 void UTankAimingComponent::MoveBarrelTowards(const FVector& aimDirection)
 {
+	if (!barrel || !turret) { return; }
 	// Work out difference between current barrel rotation and aim direction
 	FRotator barrelRotator = barrel->GetForwardVector().Rotation();
 	FRotator aimAsRotator = aimDirection.Rotation();

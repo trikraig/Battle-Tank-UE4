@@ -14,17 +14,13 @@ class AProjectile;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
-	GENERATED_BODY()
+GENERATED_BODY()
 public:
 	ATank();
 	virtual void BeginPlay() override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void AimAt(const FVector& hitLocation);
-	UFUNCTION(BluePrintCallable, Category = Setup)
-	void SetBarrelReference(UTankBarrel* barrelToSet);
-	UFUNCTION(BluePrintCallable, Category = Setup)
-	void SetTurretReference(UTankTurret* turretToSet);
 	UFUNCTION(BluePrintCallable, Category = Firing)
 	void Fire();
 
@@ -33,13 +29,13 @@ protected:
 	UTankAimingComponent* tankAimingComponent{ nullptr };
 
 private:
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditAnywhere, Category = "Firing")
 	float launchSpeed{ 4000 };
 	double lastFireTime{ 0 };
-	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float reloadTimeInSeconds{ 3 };
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditAnywhere, Category = "Firing")
 	TSubclassOf<AProjectile> projectileBlueprint;
-	UTankBarrel* barrel = nullptr;
+	UTankBarrel* barrel = nullptr; //TODO remove
 
 };
