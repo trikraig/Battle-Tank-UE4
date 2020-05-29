@@ -8,7 +8,6 @@
 
 class UTankBarrel;
 class UTankTurret;
-class UTankAimingComponent;
 class AProjectile;
 
 UCLASS()
@@ -20,19 +19,14 @@ public:
 	virtual void BeginPlay() override;
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void AimAt(const FVector& hitLocation);
+
 	UFUNCTION(BluePrintCallable, Category = Firing)
 	void Fire();
-
-protected:
-	UPROPERTY(BlueprintReadOnly)
-	UTankAimingComponent* tankAimingComponent{ nullptr };
 
 private:
 
 	//TODO Remove when copy firing to aiming component.
-	UPROPERTY(EditAnywhere, Category = "Firing")
-	float launchSpeed{ 4000 };
+
 	double lastFireTime{ 0 };
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float reloadTimeInSeconds{ 3 };

@@ -3,23 +3,20 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-
 #include "TankAIController.generated.h"
 
 /**
- * 
+ * Controls aiming and movement of AI tanks
  */
-class ATank;
 
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
     GENERATED_BODY()
 private:
-    ATank* controlledTank{ nullptr };
-    ATank* playerTank{ nullptr };
     //min distance ai to player
     float acceptanceRadius{ 50 };
+    void AimTowardsPlayer();
 public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;

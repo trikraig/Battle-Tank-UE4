@@ -3,11 +3,8 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Projectile.h"
-#include "Public/TankAimingComponent.h"
 #include "Engine/World.h"
 #include "Tank.h"
-
-
 
 // Sets default values
 ATank::ATank()
@@ -21,19 +18,12 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();	 //Needed for BP Begin Play to run
 
-	tankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
-void ATank::AimAt(const FVector& hitLocation)
-{
-	if (!ensure(tankAimingComponent)) { return; }
-	tankAimingComponent->AimAt(hitLocation, launchSpeed); 
 }
 
 void ATank::Fire()
@@ -43,7 +33,7 @@ void ATank::Fire()
 	{
 		//Spawn projectile at socket location on the barrel
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBlueprint, barrel->GetSocketLocation(FName("Projectile")), barrel->GetSocketRotation(FName("Projectile")));
-		projectile->LaunchProjectile(launchSpeed);
+		//projectile->LaunchProjectile(launchSpeed);
 		lastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }

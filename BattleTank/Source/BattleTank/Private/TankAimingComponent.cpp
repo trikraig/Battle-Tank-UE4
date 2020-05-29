@@ -27,7 +27,7 @@ void UTankAimingComponent::BeginPlay()
 	// ...
 }
 
-void UTankAimingComponent::AimAt(const FVector& hitLocation, const float& launchSpeed)
+void UTankAimingComponent::AimAt(const FVector& hitLocation)
 {
 	if (!ensure(barrel)) { return; }
 	FVector outLaunchVelocity(0);
