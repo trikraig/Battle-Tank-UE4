@@ -10,20 +10,17 @@ void UTankMovementComponent::Initialise(UTankTrack* leftTrackToSet, UTankTrack* 
 }
 void UTankMovementComponent::IntendMoveForward(const float& amountThrow)
 {
-	if (leftTrack && rightTrack)
-	{
-		leftTrack->setThrottle(amountThrow);
-		rightTrack->setThrottle(amountThrow);
-	}
+	if (!ensure(leftTrack && rightTrack)) { return; }
+	leftTrack->setThrottle(amountThrow);
+	rightTrack->setThrottle(amountThrow);
 }
 
 void UTankMovementComponent::IntendTurnRight(const float& amountThrow)
 {
-	if (!leftTrack || !rightTrack)
-	{
+	if (!ensure(leftTrack && rightTrack)) {return;}
 		leftTrack->setThrottle(amountThrow);
 		rightTrack->setThrottle(-amountThrow);
-	}
+
 }
 
 void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)
