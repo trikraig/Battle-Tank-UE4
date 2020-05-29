@@ -20,7 +20,7 @@ ATank::ATank()
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
-	Super::BeginPlay();	
+	Super::BeginPlay();	 //Needed for BP Begin Play to run
 }
 
 // Called to bind functionality to input

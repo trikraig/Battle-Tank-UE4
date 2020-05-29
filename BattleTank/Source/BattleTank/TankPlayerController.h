@@ -20,6 +20,7 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 protected:
     UFUNCTION(BlueprintCallable, Category = "Setup")
     ATank* GetControlledTank() const;
+  
 private:
     //Start the tank moving the barrel so shot would hit where crosshair intersects the world
     virtual void BeginPlay() override;
