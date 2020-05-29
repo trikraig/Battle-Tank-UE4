@@ -32,6 +32,6 @@ void ATankAIController::AimTowardsPlayer()
 	//Aim towards the player
 	auto aimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	aimingComponent->AimAt(playerTank->GetActorLocation());
-	//controlledTank->Fire();
+	aimingComponent->Fire();
 	
 }
