@@ -19,7 +19,7 @@ private:
     ATank* controlledTank{ nullptr };
     ATank* playerTank{ nullptr };
     //min distance ai to player
-    float acceptanceRadius{ 30 };
+    float acceptanceRadius{ 50 };
 public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
