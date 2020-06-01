@@ -32,6 +32,14 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	{
 		firingStatus = EFiringStatus::Reloading;
 	}
+	else if (IsBarrelMoving())
+	{
+		firingStatus = EFiringStatus::Aiming;
+	}
+	else
+	{
+		firingStatus = EFiringStatus::Locked;
+	}
 
 	//TODO handle aiming and locked states.
 }
@@ -62,8 +70,8 @@ void UTankAimingComponent::AimAt(const FVector& hitLocation)
 	));
 	if(bHaveAimSolution)
 	{
-		FVector aimDirection = outLaunchVelocity.GetSafeNormal(); //Turns into a unit vector
-		MoveBarrelTowards(aimDirection);
+		aimDirection = outLaunchVelocity.GetSafeNormal(); //Turns into a unit vector
+		MoveBarrelTowards();
 	}
 }
 
@@ -73,6 +81,7 @@ void UTankAimingComponent::Fire()
 	{
 		if (!ensure(barrel)) { return; }
 		if (!ensure(projectileBlueprint)) { return; }
+		//UE_LOG(LogTemp, Warning, TEXT("fire"));
 		//Spawn projectile at socket location on the barrel
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBlueprint, barrel->GetSocketLocation(FName("Projectile")), barrel->GetSocketRotation(FName("Projectile")));
 		projectile->LaunchProjectile(launchSpeed);
@@ -81,7 +90,7 @@ void UTankAimingComponent::Fire()
 }
 
 
-void UTankAimingComponent::MoveBarrelTowards(const FVector& aimDirection)
+void UTankAimingComponent::MoveBarrelTowards()
 {
 	if (!ensure(barrel &&turret)) { return; }
 	// Work out difference between current barrel rotation and aim direction
@@ -90,5 +99,11 @@ void UTankAimingComponent::MoveBarrelTowards(const FVector& aimDirection)
 	FRotator deltaRotator = aimAsRotator - barrelRotator;
 	turret->Rotate(deltaRotator.Yaw);
 	barrel->Elevate(deltaRotator.Pitch); 
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	if (!ensure(barrel)) { return false; }
+	return !(barrel->GetForwardVector().Equals(aimDirection, 0.01));
 }
 

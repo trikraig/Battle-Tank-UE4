@@ -44,7 +44,8 @@ private:
 
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
-	void MoveBarrelTowards(const FVector& aimDirection);
+	void MoveBarrelTowards();
+	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float launchSpeed{ 4000 };
@@ -56,6 +57,8 @@ private:
 	TSubclassOf<AProjectile> projectileBlueprint;
 		
 	double lastFireTime{ 0 };
+
+	FVector aimDirection{ 0 };
 
 
 
