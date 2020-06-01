@@ -36,11 +36,13 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringStatus firingStatus{ EFiringStatus::Locked };
+	EFiringStatus firingStatus{ EFiringStatus::Reloading };
 
 private:
 	UTankBarrel* barrel{ nullptr };
 	UTankTurret* turret{ nullptr };
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	void MoveBarrelTowards(const FVector& aimDirection);
 
@@ -54,5 +56,7 @@ private:
 	TSubclassOf<AProjectile> projectileBlueprint;
 		
 	double lastFireTime{ 0 };
+
+
 
 };
