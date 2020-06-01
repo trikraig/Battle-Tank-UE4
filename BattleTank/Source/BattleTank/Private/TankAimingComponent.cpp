@@ -27,6 +27,7 @@ void UTankAimingComponent::BeginPlay()
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	//UE_LOG(LogTemp, Warning, TEXT("Tick"));
 	if ((GetWorld()->GetTimeSeconds() - lastFireTime) < reloadTimeInSeconds)
 	{
@@ -40,8 +41,6 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	{
 		firingStatus = EFiringStatus::Locked;
 	}
-
-	//TODO handle aiming and locked states.
 }
 
 
@@ -81,7 +80,7 @@ void UTankAimingComponent::Fire()
 	{
 		if (!ensure(barrel)) { return; }
 		if (!ensure(projectileBlueprint)) { return; }
-		//UE_LOG(LogTemp, Warning, TEXT("fire"));
+
 		//Spawn projectile at socket location on the barrel
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBlueprint, barrel->GetSocketLocation(FName("Projectile")), barrel->GetSocketRotation(FName("Projectile")));
 		projectile->LaunchProjectile(launchSpeed);
