@@ -14,6 +14,8 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 public:
+	// Called when the game starts
+	virtual void BeginPlay() override;
 	UTankTrack();
 	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//Max force per track in newtons
@@ -21,5 +23,8 @@ public:
 	float trackMaxDrivingForce{40000000};
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void setThrottle(const float& throttle);
+private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
 	
 };
