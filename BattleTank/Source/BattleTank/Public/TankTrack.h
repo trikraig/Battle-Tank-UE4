@@ -17,14 +17,15 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	UTankTrack();
-	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	//Max force per track in newtons
 	UPROPERTY(EditDefaultsOnly)
 	float trackMaxDrivingForce{40000000};
 	UFUNCTION(BlueprintCallable, Category = Input)
-	void setThrottle(const float& throttle);
+	void SetThrottle(const float& throttle);
 private:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit);
-	
+	void DriveTracks();
+	void ApplySidewaysForce();
+	float currentThrottle{ 0 };
 };

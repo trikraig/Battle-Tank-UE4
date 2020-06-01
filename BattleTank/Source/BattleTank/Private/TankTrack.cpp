@@ -5,7 +5,9 @@
 
 UTankTrack::UTankTrack()
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
+	//aka Simulation Generation Hit Events in Collision section. Keeps getting unset when compile C++.
+	SetNotifyRigidBodyCollision(true);
 }
 
 void UTankTrack::BeginPlay()
@@ -15,32 +17,39 @@ void UTankTrack::BeginPlay()
 
 }
 
-void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
-	Super::TickComponent(DeltaTime,TickType,ThisTickFunction);
-	//UE_LOG(LogTemp, Warning, TEXT("test"));
+	UE_LOG(LogTemp, Warning, TEXT("on hit"));
+	DriveTracks();
+	ApplySidewaysForce();
+	currentThrottle = 0;
+}
+
+void UTankTrack::SetThrottle(const float& throttle)
+{
+	currentThrottle = FMath::Clamp<float>(currentThrottle + throttle, -1, 1);
+}
+
+void UTankTrack::DriveTracks()
+{
+	FVector forceApplied = GetForwardVector() * currentThrottle * trackMaxDrivingForce;
+	FVector forceLocation = GetComponentLocation();
+	auto tankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+	tankRoot->AddForceAtLocation(forceApplied, forceLocation);
+	UE_LOG(LogTemp, Warning, TEXT("DRIVE TRACK"));
+}
+
+void UTankTrack::ApplySidewaysForce()
+{
 	//calculate the slippage speed
 	float slippageSpeed = FVector().DotProduct(GetRightVector(), GetComponentVelocity());
 	//work out the required acceleration this frame to correct
-	FVector correctionAcceleration = -slippageSpeed / DeltaTime * GetRightVector();
+	FVector correctionAcceleration = -slippageSpeed / GetWorld()->GetDeltaSeconds() * GetRightVector();
 	//calculate and apply sideways force (F = m a)
 	auto tankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	auto correctionForce = tankRoot->GetMass() * correctionAcceleration / 2; //divide by 2 as two tracks
 	tankRoot->AddForce(correctionForce);
-
+	
 }
 
-void UTankTrack::setThrottle(const float& throttle)
-{
-	FVector forceApplied = GetForwardVector() * throttle * trackMaxDrivingForce;
-	FVector forceLocation = GetComponentLocation();
-	auto tankRoot = Cast<UPrimitiveComponent> (GetOwner()->GetRootComponent());
-	tankRoot->AddForceAtLocation(forceApplied, forceLocation);
-	//UE_LOG(LogTemp, Warning, TEXT("moving forward %s"), *GetOwner()->GetName());
-}
-
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
-	UE_LOG(LogTemp, Warning, TEXT("GROUND HIT TEST"));
-}
 

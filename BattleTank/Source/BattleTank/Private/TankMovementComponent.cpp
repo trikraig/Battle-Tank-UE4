@@ -11,15 +11,16 @@ void UTankMovementComponent::Initialise(UTankTrack* leftTrackToSet, UTankTrack* 
 void UTankMovementComponent::IntendMoveForward(const float& amountThrow)
 {
 	if (!ensure(leftTrack && rightTrack)) { return; }
-	leftTrack->setThrottle(amountThrow);
-	rightTrack->setThrottle(amountThrow);
+	//UE_LOG(LogTemp, Warning, TEXT("intend move forward"));
+	leftTrack->SetThrottle(amountThrow);
+	rightTrack->SetThrottle(amountThrow);
 }
 
 void UTankMovementComponent::IntendTurnRight(const float& amountThrow)
 {
 	if (!ensure(leftTrack && rightTrack)) {return;}
-		leftTrack->setThrottle(amountThrow);
-		rightTrack->setThrottle(-amountThrow);
+		leftTrack->SetThrottle(amountThrow);
+		rightTrack->SetThrottle(-amountThrow);
 
 }
 
