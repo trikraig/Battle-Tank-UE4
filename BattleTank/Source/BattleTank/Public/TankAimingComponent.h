@@ -11,7 +11,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 class UTankBarrel;
@@ -35,9 +36,11 @@ public:
 	void Initialise(UTankBarrel* barrelToSet, UTankTurret* turretToSet);
 
 	EFiringStatus GetFiringState() const;
+	UFUNCTION(BluePrintCallable, Category = "Firing")
+	int GetAmmoRemaining() const;
 
 protected:
-	UPROPERTY(BlueprintReadOnly, Category = "State")
+	UPROPERTY(BlueprintReadOnly, Category = "Firing")
 	EFiringStatus firingStatus{ EFiringStatus::Reloading };
 
 private:
@@ -48,6 +51,9 @@ private:
 	
 	void MoveBarrelTowards();
 	bool IsBarrelMoving();
+
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int ammoRemaining {3};
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float launchSpeed{ 4000 };

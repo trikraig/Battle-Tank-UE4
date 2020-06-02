@@ -28,7 +28,11 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if ((GetWorld()->GetTimeSeconds() - lastFireTime) < reloadTimeInSeconds)
+	if (ammoRemaining <= 0)
+	{
+		firingStatus = EFiringStatus::OutOfAmmo;
+	}
+	else if ((GetWorld()->GetTimeSeconds() - lastFireTime) < reloadTimeInSeconds)
 	{
 		firingStatus = EFiringStatus::Reloading;
 	}
@@ -40,6 +44,8 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	{
 		firingStatus = EFiringStatus::Locked;
 	}
+
+	
 }
 
 
@@ -52,6 +58,11 @@ void UTankAimingComponent::Initialise(UTankBarrel* barrelToSet, UTankTurret* tur
 EFiringStatus UTankAimingComponent::GetFiringState() const
 {
 	return firingStatus;
+}
+
+int32 UTankAimingComponent::GetAmmoRemaining() const
+{
+	return ammoRemaining;
 }
 
 void UTankAimingComponent::AimAt(const FVector& hitLocation)
@@ -71,7 +82,7 @@ void UTankAimingComponent::AimAt(const FVector& hitLocation)
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	));
-	if(bHaveAimSolution)
+	if (bHaveAimSolution)
 	{
 		aimDirection = outLaunchVelocity.GetSafeNormal(); //Turns into a unit vector
 		MoveBarrelTowards();
@@ -80,15 +91,18 @@ void UTankAimingComponent::AimAt(const FVector& hitLocation)
 
 void UTankAimingComponent::Fire()
 {
-	if (firingStatus != EFiringStatus::Reloading)
+	if (firingStatus == EFiringStatus::Locked || firingStatus == EFiringStatus::Aiming)
 	{
+
 		if (!ensure(barrel)) { return; }
 		if (!ensure(projectileBlueprint)) { return; }
 
+		UE_LOG(LogTemp, Warning, TEXT("Firing Status: %i"), firingStatus);
 		//Spawn projectile at socket location on the barrel
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(projectileBlueprint, barrel->GetSocketLocation(FName("Projectile")), barrel->GetSocketRotation(FName("Projectile")));
 		projectile->LaunchProjectile(launchSpeed);
 		lastFireTime = GetWorld()->GetTimeSeconds();
+		ammoRemaining--;			
 	}
 }
 
