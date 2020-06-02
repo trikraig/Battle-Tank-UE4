@@ -14,7 +14,6 @@ void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
 	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
-
 }
 
 void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
@@ -36,7 +35,6 @@ void UTankTrack::DriveTracks()
 	FVector forceLocation = GetComponentLocation();
 	auto tankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	tankRoot->AddForceAtLocation(forceApplied, forceLocation);
-	UE_LOG(LogTemp, Warning, TEXT("DRIVE TRACK"));
 }
 
 void UTankTrack::ApplySidewaysForce()
@@ -49,7 +47,6 @@ void UTankTrack::ApplySidewaysForce()
 	auto tankRoot = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	auto correctionForce = tankRoot->GetMass() * correctionAcceleration / 2; //divide by 2 as two tracks
 	tankRoot->AddForce(correctionForce);
-	
 }
 
 

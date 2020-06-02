@@ -38,9 +38,9 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& hitLocation) const
 	FVector2D screenLocation(viewportSizeX*crosshairXLocation, viewportSizeY*crosshairYLocation);
 	//De-project the screen position of the crosshair to a world direction / convert crosshair screen position to a world space direction
 	FVector lookDirection;
-	if (GetLookDirection(screenLocation, lookDirection) && GetLookVectorHitLocation(lookDirection, hitLocation))
+	if (GetLookDirection(screenLocation, lookDirection))
 	{
-		return true;
+		return GetLookVectorHitLocation(lookDirection, hitLocation);
 	}
 	//Missed 
 	return false;

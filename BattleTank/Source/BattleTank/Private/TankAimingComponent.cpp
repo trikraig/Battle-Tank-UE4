@@ -28,7 +28,6 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	//UE_LOG(LogTemp, Warning, TEXT("Tick"));
 	if ((GetWorld()->GetTimeSeconds() - lastFireTime) < reloadTimeInSeconds)
 	{
 		firingStatus = EFiringStatus::Reloading;
@@ -96,8 +95,16 @@ void UTankAimingComponent::MoveBarrelTowards()
 	FRotator barrelRotator = barrel->GetForwardVector().Rotation();
 	FRotator aimAsRotator = aimDirection.Rotation();
 	FRotator deltaRotator = aimAsRotator - barrelRotator;
-	turret->Rotate(deltaRotator.Yaw);
 	barrel->Elevate(deltaRotator.Pitch); 
+	//Always yaw the shortest way
+	if (FMath::Abs(deltaRotator.Yaw) < 180)
+	{
+		turret->Rotate(deltaRotator.Yaw);
+	}
+	else
+	{
+		turret->Rotate(-deltaRotator.Yaw);
+	}
 }
 
 bool UTankAimingComponent::IsBarrelMoving()
