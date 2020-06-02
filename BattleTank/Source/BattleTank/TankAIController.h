@@ -13,11 +13,14 @@ UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
     GENERATED_BODY()
-private:
+
+protected:
     //min distance ai to player
-    float acceptanceRadius{ 50 };
-    void AimTowardsPlayer();
+    UPROPERTY(EditDefaultsOnly, Category = "Setup")
+    float acceptanceRadius{ 8000 };
+
 public:
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
+    void AimTowardsPlayer();
 };
