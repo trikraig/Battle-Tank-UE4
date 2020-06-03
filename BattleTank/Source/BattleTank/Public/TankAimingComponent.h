@@ -37,7 +37,7 @@ public:
 
 	EFiringStatus GetFiringState() const;
 	UFUNCTION(BluePrintCallable, Category = "Firing")
-	int GetAmmoRemaining() const;
+	int32 GetAmmoRemaining() const;
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Firing")
@@ -53,7 +53,7 @@ private:
 	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int ammoRemaining {3};
+	int32 ammoRemaining {3};
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float launchSpeed{ 4000 };
