@@ -9,7 +9,7 @@
 AProjectile::AProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	collisionMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("Collision Mesh"));
 	SetRootComponent(collisionMesh);
@@ -17,14 +17,10 @@ AProjectile::AProjectile()
 	collisionMesh->SetVisibility(false);
 	
 	launchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Launch Blast"));
-	launchBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform); //TODO check update to new API
+	launchBlast->AttachTo(RootComponent);
 
-	projectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Projectile Movement"));
+	projectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(FName("Movement Component"));
 	projectileMovementComponent->bAutoActivate = false;
-
-	impactBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("Impact Blast"));
-	impactBlast->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
-	impactBlast->bAutoActivate = false;
 }
 
 // Called when the game starts or when spawned

@@ -32,8 +32,5 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly)
 	UParticleSystemComponent* launchBlast = nullptr;
 
-	UPROPERTY(VisibleDefaultsOnly)
-		UParticleSystemComponent* impactBlast = nullptr;
-
 
 };
