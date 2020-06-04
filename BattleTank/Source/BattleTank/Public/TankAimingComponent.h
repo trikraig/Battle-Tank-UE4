@@ -53,13 +53,13 @@ private:
 	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	int32 ammoRemaining {3};
+	int32 ammoRemaining {20};
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float launchSpeed{ 4000 };
+	float launchSpeed{ 8000 };
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-	float reloadTimeInSeconds{ 3 };
+	float reloadTimeInSeconds{ 2 };
 
 	UPROPERTY(EditAnywhere, Category = "Setup")
 	TSubclassOf<AProjectile> projectileBlueprint;
