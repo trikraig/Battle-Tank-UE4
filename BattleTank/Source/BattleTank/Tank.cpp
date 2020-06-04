@@ -9,4 +9,12 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-
+float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{	
+	int32 damagePoints = FMath::RoundToInt(DamageAmount);
+	int32 damageToApply = FMath::Clamp<int32>(damagePoints,0, maxHealth);
+	currentHealth -= damageToApply;
+	UE_LOG(LogTemp, Warning, TEXT("Damage amount: %f"), DamageAmount);
+	UE_LOG(LogTemp, Warning, TEXT("Damage to apply: %f"), damageToApply);
+	return damageToApply;
+}

@@ -5,6 +5,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/DamageType.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -62,13 +64,22 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	SetRootComponent(impactBlast);
 	collisionMesh->DestroyComponent();
 
+	//Damage Enemy Tank
+	UGameplayStatics::ApplyRadialDamage(
+		this, //this projectile causing damage
+		projectileDamage,
+		GetActorLocation(),
+		explosionForce->Radius, //for consistancy
+		UDamageType::StaticClass(),
+		TArray<AActor*>() // damage all actors
+		);
+
 	FTimerHandle timer;
 	GetWorld()->GetTimerManager().SetTimer(timer, this, &AProjectile::OnTimerExpire, destroyDelay, false);
 }
 
 void AProjectile::OnTimerExpire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("DESTROY CALLED"));
 	Destroy();
 }
 
