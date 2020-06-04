@@ -19,8 +19,14 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Setup")
     float acceptanceRadius{ 8000 };
 
-public:
+private:
+
     virtual void BeginPlay() override;
     virtual void Tick(float DeltaTime) override;
     void AimTowardsPlayer();
+
+    virtual void SetPawn(APawn* InPawn) override;
+
+    UFUNCTION()
+    void OnPossessedTankDeath();
 };
