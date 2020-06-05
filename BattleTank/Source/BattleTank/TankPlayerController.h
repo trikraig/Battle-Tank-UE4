@@ -28,6 +28,13 @@ private:
     bool GetSightRayHitLocation(FVector& hitLocation) const;
     bool GetLookDirection(FVector2D screenLocation, FVector& lookDirection) const;
     bool GetLookVectorHitLocation(const FVector& lookDirection, FVector& hitLocation) const;
+
+    //Subscribes Tank to Delegate event
+    virtual void SetPawn(APawn* InPawn) override;
+    //Function called with delegate event received
+    UFUNCTION()
+    void OnPossessedTankDeath();
+
     UPROPERTY(EditAnywhere)
     float crosshairXLocation {0.5};
     UPROPERTY(EditAnywhere)

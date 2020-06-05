@@ -22,8 +22,9 @@ public:
 	FTankDelegate OnDeath;
 private:
 	ATank();
+	virtual void BeginPlay() override;
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	int32 maxHealth{ 100 };
 	UPROPERTY(VisibleAnywhere, Category = "Health")
-	int32 currentHealth = maxHealth;
+	int32 currentHealth; //initialised in begin play
 };

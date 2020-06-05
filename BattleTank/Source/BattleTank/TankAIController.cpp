@@ -19,8 +19,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	if (InPawn)
 	{
 		auto possessedTank = Cast<ATank>(InPawn);
-		if (!ensure(possessedTank)) { return; }
-
+		if (!possessedTank) { return; }
 		//TODO Subscribe our local method to tanks death event.
 		possessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);
 	}
@@ -28,7 +27,15 @@ void ATankAIController::SetPawn(APawn* InPawn)
 
 void ATankAIController::OnPossessedTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("RECEIVED"));
+	//Death of Tank
+	//DetachFromControllerPendingDestroy();
+	auto pawn = GetPawn();
+	if (pawn)
+	{
+		pawn->DetachFromControllerPendingDestroy();
+	}
+	UE_LOG(LogTemp, Warning, TEXT("AI Tank Destroyed"));
+	//Call an explosion on the tank and destroy?
 }
 
 
@@ -42,13 +49,9 @@ void ATankAIController::AimTowardsPlayer()
 {
 	auto controlledTank = GetPawn();
 	auto playerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (!ensure(playerTank && controlledTank)) { return; }
-	
+	if (!ensure(playerTank && controlledTank)) { return; } //TODO - Will fail when player tank is destroyed
 	//Move towards the player
-	MoveToActor( //TODO check radius is in cm
-		playerTank,
-		acceptanceRadius
-	);
+	MoveToActor(playerTank,acceptanceRadius);
 	//Aim towards the player
 	auto aimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	aimingComponent->AimAt(playerTank->GetActorLocation());
@@ -56,6 +59,5 @@ void ATankAIController::AimTowardsPlayer()
 	{
 		aimingComponent->Fire();
 	}
-	
 }
 
