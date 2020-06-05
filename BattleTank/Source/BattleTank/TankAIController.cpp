@@ -49,7 +49,7 @@ void ATankAIController::AimTowardsPlayer()
 {
 	auto controlledTank = GetPawn();
 	auto playerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (!ensure(playerTank && controlledTank)) { return; } //TODO - Will fail when player tank is destroyed
+	if (!(playerTank && controlledTank)) { return; } 
 	//Move towards the player
 	MoveToActor(playerTank,acceptanceRadius);
 	//Aim towards the player
