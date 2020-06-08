@@ -25,14 +25,14 @@ ASprungWheel::ASprungWheel()
 void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
-	if (GetAttachParentActor())
+	/*if (GetAttachParentActor())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Not null"));
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Null"));
-	}
+	}*/
 	
 }
 
